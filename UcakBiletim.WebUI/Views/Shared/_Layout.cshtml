@@ -118,9 +118,14 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Başarılı!',
-                            html: 'Üye başarıyla oluşturuldu.',
-                            showCancelButton: false
-                        });
+                            html: 'Üye başarıyla oluşturuldu. Giriş sayfasına yönlendiriliyorsunuz.',
+                            showConfirmButton: false,
+                            allowEscapeKey: false,
+                            allowOutsideClick: false,
+                            timer: 3000
+                        }).then(function () {
+                            ShowSignInModal();
+                     });
                     },
                 error:
                     function (data) {
