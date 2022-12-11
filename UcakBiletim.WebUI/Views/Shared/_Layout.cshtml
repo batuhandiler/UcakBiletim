@@ -80,6 +80,7 @@
                 url: "@Url.Action("GetSignInPartial", "User")",
                 dataType: 'html',
                 success: function (data) {
+                    $('#uyeOlModal').modal('hide');
                     $('#signin-modal-body').html(data);
                     $('#girisYapModal').modal('show');
                 }
