@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Uçak Biletim</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark border-bottom">
+            <a class="navbar-brand text-dark" asp-area="" asp-controller="Home" asp-action="Index">Uçak Biletim</a>
+            <button class="navbar-toggler bg-secondary" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbarLinks">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <button class="btn btn-link"><a class="nav-link text-dark" data-toggle="modal" data-target="#uyeOlModal">Üye Ol</a></button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-link"><a class="nav-link text-dark" data-toggle="modal" data-target="#girisYapModal">Giriş Yap</a></button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- BEGIN Uye ol modal -->
+    <div class="modal fade" id="uyeOlModal" tabindex="-1" role="dialog" aria-labelledby="uyeOlModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uyeOlModalLabel">Üye Ol</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="uyeOlForm">
+                        <div class="form-group">
+                            <label for="uyeOlIsim" class="col-form-label">İsim</label>
+                            <input type="text" class="form-control" id="uyeOlIsim">
+                        </div>
+                        <div class="form-group">
+                            <label for="uyeOlSoyisim" class="col-form-label">Soy İsim</label>
+                            <input type="text" class="form-control" id="uyeOlSoyisim">
+                        </div>
+                        <div class="form-group">
+                            <label for="uyeOlMail" class="col-form-label">Mail</label>
+                            <input type="email" class="form-control" id="uyeOlMail">
+                        </div>
+                        <div class="form-group">
+                            <label for="uyeOlSifre" class="col-form-label">Şifre</label>
+                            <input type="text" class="form-control" id="uyeOlSifre">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary">Üye Ol</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END Uye ol modal -->
+    <!-- BEGIN Giris yap modal -->
+    <div class="modal fade" id="girisYapModal" tabindex="-1" role="dialog" aria-labelledby="girisYapModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="girisYapModalLabel">Giriş Yap</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="girisYapMail" class="col-form-label">Mail</label>
+                            <input type="email" class="form-control" id="girisYapMail">
+                        </div>
+                        <div class="form-group">
+                            <label for="girisYapSifre" class="col-form-label">Şifre</label>
+                            <input type="password" class="form-control" id="girisYapSifre">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary">Giriş Yap</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END Giris yap modal -->
+
+    <footer class="border-top footer text-muted text-center">
+        <div class="container">
+            &copy; 2022 - Uçak Biletim
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
