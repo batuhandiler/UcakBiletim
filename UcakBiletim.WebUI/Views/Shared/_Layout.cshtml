@@ -68,6 +68,7 @@
                 url: "@Url.Action("GetSignUpPartial", "User")",
                 dataType: 'html',
                 success: function (data) {
+                    $('#girisYapModal').modal('hide');
                     $('#signup-modal-body').html(data);
                     $('#uyeOlModal').modal('show');
                 }
