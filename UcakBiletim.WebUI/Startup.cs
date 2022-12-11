@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System;
 using UcakBiletim.Business;
 using UcakBiletim.DataAccess;
 
@@ -21,6 +24,9 @@ namespace UcakBiletim.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(60));
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddBusiness();
             services.AddDataAccess(Configuration);
@@ -43,6 +49,8 @@ namespace UcakBiletim.WebUI
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthorization();
 
