@@ -19,7 +19,7 @@ namespace UcakBiletim.WebUI.Controllers
 
         public async Task<IActionResult> SignUp(User user)
         {
-            if (!string.IsNullOrEmpty(user.Mail))
+            if (!string.IsNullOrEmpty(user.Mail) && !string.IsNullOrEmpty(user.Password))
             {
                 try
                 {
