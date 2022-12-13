@@ -1,0 +1,7 @@
+﻿@model ResultFlightViewModel
+
+@{
+    ViewData["Title"] = "Uçuşlar";
+}
+
+<h5>@Model.DepartureFlights[0].Date.ToShortTimeString()</h5>

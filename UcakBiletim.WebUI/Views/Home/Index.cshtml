@@ -1,20 +1,22 @@
-﻿@{
+﻿@model SearchFlightViewModel
+
+@{
     ViewData["Title"] = "Anasayfa";
 }
 
 <div class="row mt-5">
     <div class="col-md-6 bg-light rounded-lg">
-        <form class="m-3">
+        <form id="searchFlightForm" class="m-3">
             <div class="form-group">
                 <h4>Uçak Biletim</h4>
             </div>
             <div class="form-group">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="tekYonRadio" value="TekYon">
+                    <input class="form-check-input" type="radio" name="OneWayRoundTrip" id="tekYonRadio" value="TekYon" checked>
                     <label class="form-check-label" for="tekYonRadio">Tek Yön</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="gidisDonusRadio" value="GidisDonus">
+                    <input class="form-check-input" type="radio" name="OneWayRoundTrip" id="gidisDonusRadio" value="GidisDonus">
                     <label class="form-check-label" for="gidisDonusRadio">Gidiş Dönüş</label>
                 </div>
             </div>
@@ -22,13 +24,13 @@
                 <div class="col">
                     <div class="form-group">
                         <label for="nereden">Nereden</label>
-                        <input type="text" class="form-control" id="nereden" placeholder="Nereden">
+                        <input type="text" class="form-control" id="nereden" placeholder="Nereden" asp-for="From" value="İstanbul">
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label for="nereye">Nereye</label>
-                        <input type="text" class="form-control" id="nereye" placeholder="Nereye">
+                        <input type="text" class="form-control" id="nereye" placeholder="Nereye" asp-for="To" value="İzmir">
                     </div>
                 </div>
             </div>
@@ -36,23 +38,75 @@
                 <div class="col">
                     <div class="form-group">
                         <label for="gidisTarihi">Gidiş Tarihi</label>
-                        <input type="date" class="form-control" id="gidisTarihi">
+                        <input type="date" class="form-control" id="gidisTarihi" asp-for="DepartureDate" value="@DateTime.Today.ToString("yyyy-MM-dd")">
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label for="donusTarihi">Dönüş Tarihi</label>
-                        <input type="date" class="form-control" id="donusTarihi">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-block btn-secondary">Uçak Bileti Ara</button>
+                        <input type="date" class="form-control" id="donusTarihi" asp-for="ReturnDate" value="@DateTime.Today.ToString("yyyy-MM-dd")">
                     </div>
                 </div>
             </div>
         </form>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-block btn-secondary" onclick="SearchFlight()">Uçak Bileti Ara</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+        function SearchFlight() {
+            let form = $("#searchFlightForm");
+            let searchFlightViewModel = $(form).serialize();
+            let token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            $.ajax({
+                url: "@Url.Action("SearchFlight", "Flight")",
+                data: searchFlightViewModel,
+                async: true,
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                type: "post",
+                contentType: "application/x-www-form-urlencoded",
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Lütfen Bekleyin!',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        onOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success:
+                    function (data) {
+                        window.location.href = "@Url.Action("ResultFlight", "Flight")";
+                    },
+                error:
+                    function (data) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Başarısız!',
+                            html: 'Uçuşlar listelenirken hata meydana geldi.',
+                            showCancelButton: false
+                        });
+                    },
+            });
+        };
+
+    </script>
+
+}

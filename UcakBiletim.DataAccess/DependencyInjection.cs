@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UcakBiletim.DataAccess.Contexts;
 using UcakBiletim.DataAccess.Repositories;
+using UcakBiletim.DataAccess.Repositories.Flights;
 using UcakBiletim.DataAccess.Repositories.Users;
 
 namespace UcakBiletim.DataAccess
@@ -31,6 +32,7 @@ namespace UcakBiletim.DataAccess
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFlightRepository, FlightRepository>();
 
             return services;
         }

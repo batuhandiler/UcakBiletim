@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using UcakBiletim.Business.Services.Flights;
 using UcakBiletim.Business.Services.Users;
 
 namespace UcakBiletim.Business
@@ -14,6 +15,7 @@ namespace UcakBiletim.Business
         private static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IFlightService, FlightService>();
 
             return services;
         }
