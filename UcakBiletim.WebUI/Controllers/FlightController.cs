@@ -27,13 +27,13 @@ namespace UcakBiletim.WebUI.Controllers
                 var departureFlights = _flightService.GetDepartureFlights(searchFlightViewModel.From, searchFlightViewModel.To, searchFlightViewModel.DepartureDate);
                 var returnFligts = _flightService.GetReturnFlights(searchFlightViewModel.To, searchFlightViewModel.From, searchFlightViewModel.ReturnDate);
 
-                var resultFlightViewModel = new ResultFlightViewModel
+                var resultFlights = new ResultFlights
                 {
                     DepartureFlights = departureFlights,
                     ReturnFlights = returnFligts,
                 };
 
-                HttpContext.Session.Set<ResultFlightViewModel>("ResultFlight", resultFlightViewModel);
+                HttpContext.Session.Set<ResultFlights>("ResultFlights", resultFlights);
 
                 return Ok();
             }
@@ -45,8 +45,12 @@ namespace UcakBiletim.WebUI.Controllers
 
         public IActionResult ResultFlight()
         {
-            var resultFlightViewModel = HttpContext.Session.Get<ResultFlightViewModel>("ResultFlight");
-            return View(resultFlightViewModel);
+            var resultFlights = HttpContext.Session.Get<ResultFlights>("ResultFlights");
+
+            ViewBag.DepartureFlights = resultFlights.DepartureFlights;
+            ViewBag.ReturnFlights = resultFlights.ReturnFlights;
+
+            return View();
         }
     }
 }
