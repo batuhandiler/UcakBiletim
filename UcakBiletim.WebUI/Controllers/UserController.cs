@@ -51,6 +51,8 @@ namespace UcakBiletim.WebUI.Controllers
                         var signInUser = await _userService.GetUserAsync(user);
                         HttpContext.Session.Set<User>("User", signInUser);
                         HttpContext.Session.SetString("UserMail", signInUser.Mail);
+                        HttpContext.Session.SetString("UserName", signInUser.Name);
+                        HttpContext.Session.SetString("UserSurname", signInUser.SurName);
                         return Ok();
                     }
                     else
@@ -75,6 +77,8 @@ namespace UcakBiletim.WebUI.Controllers
                 {
                     HttpContext.Session.Set<User>("User", null);
                     HttpContext.Session.SetString("UserMail", "");
+                    HttpContext.Session.SetString("UserName", "");
+                    HttpContext.Session.SetString("UserSurname", "");
                     return Ok();
                 }
                 else
