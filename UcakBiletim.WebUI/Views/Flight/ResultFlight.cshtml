@@ -27,63 +27,67 @@
 
                                     <h5 class="mb-3">Gidiş</h5>
 
-                                    <table class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Firma</th>
-                                                <th scope="col">Nereden</th>
-                                                <th scope="col">Nereye</th>
-                                                <th scope="col">Tarih</th>
-                                                <th scope="col">Saat</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @{
-                                                foreach (var flight in ViewBag.DepartureFlights)
-                                                {
-                                                    <tr>
-                                                        <td>@flight.Company</td>
-                                                        <td>@flight.From</td>
-                                                        <td>@flight.To</td>
-                                                        <td>@flight.Date.ToShortDateString()</td>
-                                                        <td>@flight.Date.ToShortTimeString()</td>
-                                                        <td><input type="radio" name="DepartureFlightOptions" value="@flight.Id"></td>
-                                                    </tr>
+                                    <div>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Firma</th>
+                                                    <th scope="col">Nereden</th>
+                                                    <th scope="col">Nereye</th>
+                                                    <th scope="col">Tarih</th>
+                                                    <th scope="col">Saat</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    foreach (var flight in ViewBag.DepartureFlights)
+                                                    {
+                                                        <tr>
+                                                            <td>@flight.Company</td>
+                                                            <td>@flight.From</td>
+                                                            <td>@flight.To</td>
+                                                            <td>@flight.Date.ToShortDateString()</td>
+                                                            <td>@flight.Date.ToShortTimeString()</td>
+                                                            <td><input type="radio" name="DepartureFlightOptions" value="@flight.Id"></td>
+                                                        </tr>
+                                                    }
                                                 }
-                                            }
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
-                                    <h5 class="mb-3" @(ViewBag.OneWayRoundTrip == "TekYon" ? "hidden" : "")>Dönüş</h5>
+                                    <div @(ViewBag.OneWayRoundTrip == "TekYon" ? "hidden" : "")>
+                                        <h5 class="mb-3">Dönüş</h5>
 
-                                    <table class="table table-hover" @(ViewBag.OneWayRoundTrip == "TekYon" ? "hidden" : "")>
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Firma</th>
-                                                <th scope="col">Nereden</th>
-                                                <th scope="col">Nereye</th>
-                                                <th scope="col">Tarih</th>
-                                                <th scope="col">Saat</th>
-                                                <th scope="col"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @{
-                                                foreach (var flight in ViewBag.ReturnFlights)
-                                                {
-                                                    <tr>
-                                                        <td>@flight.Company</td>
-                                                        <td>@flight.From</td>
-                                                        <td>@flight.To</td>
-                                                        <td>@flight.Date.ToShortDateString()</td>
-                                                        <td>@flight.Date.ToShortTimeString()</td>
-                                                        <td><input type="radio" name="ReturnFlightOptions" value="@flight.Id"></td>
-                                                    </tr>
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Firma</th>
+                                                    <th scope="col">Nereden</th>
+                                                    <th scope="col">Nereye</th>
+                                                    <th scope="col">Tarih</th>
+                                                    <th scope="col">Saat</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    foreach (var flight in ViewBag.ReturnFlights)
+                                                    {
+                                                        <tr>
+                                                            <td>@flight.Company</td>
+                                                            <td>@flight.From</td>
+                                                            <td>@flight.To</td>
+                                                            <td>@flight.Date.ToShortDateString()</td>
+                                                            <td>@flight.Date.ToShortTimeString()</td>
+                                                            <td><input type="radio" name="ReturnFlightOptions" value="@flight.Id"></td>
+                                                        </tr>
+                                                    }
                                                 }
-                                            }
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
 
                                 </div>
                                 <input type="button" name="next" class="next action-button" value="İleri" />
