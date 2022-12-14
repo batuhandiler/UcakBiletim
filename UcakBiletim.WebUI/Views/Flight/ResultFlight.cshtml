@@ -50,7 +50,7 @@
                                                         <td>@flight.To</td>
                                                         <td>@flight.Date.ToShortDateString()</td>
                                                         <td>@flight.Date.ToShortTimeString()</td>
-                                                        <td></td>
+                                                        <td><input type="radio" name="DepartureFlightOptions" value="@flight.Id"></td>
                                                     </tr>
                                                 }
                                             }
@@ -80,7 +80,7 @@
                                                         <td>@flight.To</td>
                                                         <td>@flight.Date.ToShortDateString()</td>
                                                         <td>@flight.Date.ToShortTimeString()</td>
-                                                        <td></td>
+                                                        <td><input type="radio" name="ReturnFlightOptions" value="@flight.Id"></td>
                                                     </tr>
                                                 }
                                             }
@@ -144,10 +144,10 @@
                                     </div>
                                 </div>
                                 <input type="button" name="previous" class="previous action-button-previous" value="Geri" />
-                                <input type="button" name="make_payment" class="next action-button" value="Tamamla" />
+                                <input type="button" name="make_payment" class="next action-button" value="Tamamla" onclick="SearchFlight()" />
                             </fieldset>
                             <fieldset>
-                                <div class="form-card">
+                                <div id="successCard" class="form-card" hidden>
                                     <h2 class="fs-title text-center">Başarılı!</h2>
                                     <div class="row justify-content-center">
                                         <div class="col-7 text-center">
@@ -163,3 +163,50 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+        function SearchFlight() {
+            let form = $("#searchFlightForm");
+            let searchFlightViewModel = $(form).serialize();
+            let token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            $.ajax({
+                url: "@Url.Action("SaveReservation", "Flight")",
+                
+                async: true,
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                type: "post",
+                contentType: "application/x-www-form-urlencoded",
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Lütfen Bekleyin!',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        onOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success:
+                    function (data) {
+                        $("#successCard").prop("hidden", false);
+                    },
+                error:
+                    function (data) {
+                        
+                    },
+            });
+        };
+
+    </script>
+
+}

@@ -97,12 +97,24 @@
                     },
                 error:
                     function (data) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Başarısız!',
-                            html: 'Uçuşlar listelenirken hata meydana geldi.',
-                            showCancelButton: false
-                        });
+                        var errorMsg = data["responseText"];
+
+                        if (errorMsg == "ThereAreNoFlight") {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Uyarı!',
+                                html: 'Uygun uçuş bulunamadı.',
+                                showCancelButton: false
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Başarısız!',
+                                html: 'Uçuşlar listelenirken hata meydana geldi.',
+                                showCancelButton: false
+                            });
+                        }
                     },
             });
         };

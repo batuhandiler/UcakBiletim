@@ -33,6 +33,9 @@ namespace UcakBiletim.WebUI.Controllers
                     ReturnFlights = returnFligts,
                 };
 
+                if (resultFlights.DepartureFlights.Count == 0 || resultFlights.ReturnFlights.Count == 0)
+                    return BadRequest("ThereAreNoFlight");
+
                 HttpContext.Session.Set<ResultFlights>("ResultFlights", resultFlights);
 
                 return Ok();
@@ -51,6 +54,11 @@ namespace UcakBiletim.WebUI.Controllers
             ViewBag.ReturnFlights = resultFlights.ReturnFlights;
 
             return View();
+        }
+
+        public IActionResult SaveReservation()
+        {
+            return Ok();
         }
     }
 }
