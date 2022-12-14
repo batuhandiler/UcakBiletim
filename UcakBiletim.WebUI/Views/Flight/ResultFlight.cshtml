@@ -152,6 +152,7 @@
                                     <div class="row justify-content-center">
                                         <div class="col-7 text-center">
                                             <h5>Rezervasyon başarıyla tamamlandı.</h5>
+                                            <a type="button" class="action-button" asp-controller="Home" asp-action="Index">Anasayfa</a>
                                         </div>
                                     </div>
                                 </div>
@@ -199,6 +200,7 @@
                 success:
                     function (data) {
                         $("#successCard").prop("hidden", false);
+                        Swal.close();
                     },
                 error:
                     function (data) {
