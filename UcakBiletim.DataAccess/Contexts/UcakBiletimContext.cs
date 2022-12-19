@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using UcakBiletim.DataAccess.Configurations;
 using UcakBiletim.Entities.Concrete;
 
 namespace UcakBiletim.DataAccess.Contexts
@@ -28,6 +29,7 @@ namespace UcakBiletim.DataAccess.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new ReservationConfiguration());
         }
     }
 }
