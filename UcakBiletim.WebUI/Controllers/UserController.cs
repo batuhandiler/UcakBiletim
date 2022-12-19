@@ -53,6 +53,7 @@ namespace UcakBiletim.WebUI.Controllers
                         HttpContext.Session.SetString("UserMail", signInUser.Mail);
                         HttpContext.Session.SetString("UserName", signInUser.Name);
                         HttpContext.Session.SetString("UserSurname", signInUser.SurName);
+                        HttpContext.Session.SetInt32("UserId", signInUser.Id);
                         return Ok();
                     }
                     else
@@ -79,6 +80,7 @@ namespace UcakBiletim.WebUI.Controllers
                     HttpContext.Session.SetString("UserMail", "");
                     HttpContext.Session.SetString("UserName", "");
                     HttpContext.Session.SetString("UserSurname", "");
+                    HttpContext.Session.SetInt32("UserId", 0);
                     return Ok();
                 }
                 else

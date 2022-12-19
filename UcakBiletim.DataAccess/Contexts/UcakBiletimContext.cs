@@ -17,6 +17,7 @@ namespace UcakBiletim.DataAccess.Contexts
 
         public DbSet<User> Users { get; set; }
         public DbSet<Flight> Flights { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ReservationViewModel
+
+@{
     ViewData["Title"] = "Uçuşlar";
 
     var userMail = HttpContextAccessor.HttpContext.Session.GetString("UserMail");
@@ -6,165 +8,129 @@
     var userSurname = HttpContextAccessor.HttpContext.Session.GetString("UserSurname");
 }
 
-<div class="container-fluid" id="grad1">
-    <div class="row justify-content-center mt-0">
-        <div class="col-md-12 text-center p-0 mt-3 mb-2">
-            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                <h2><strong>Uçak Biletim</strong></h2>
-                <p>Rezervasyonu tamamlamak için adımları takip edin</p>
-                <div class="row">
-                    <div class="col-md-12 mx-0">
-                        <form id="msform">
-                            <ul id="progressbar">
-                                <li class="active" id="plane"><strong>Uçuşlar</strong></li>
-                                <li id="personal"><strong>Yolcu</strong></li>
-                                <li id="payment"><strong>Ödeme</strong></li>
-                                <li id="confirm"><strong>Tamamlandı</strong></li>
-                            </ul>
+<div class="row mt-5">
+    <div class="col-md-12">
+        <form id="reservationForm">
 
-                            <fieldset>
-                                <div class="form-card">
+            <div class="form-group">
+                <h4 class="mb-2">Gidiş Uçuşları</h4>
+                <div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Firma</th>
+                                <th scope="col">Nereden</th>
+                                <th scope="col">Nereye</th>
+                                <th scope="col">Tarih</th>
+                                <th scope="col">Saat</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var flight in ViewBag.DepartureFlights)
+                                {
+                                    <tr>
+                                        <td>@flight.Company</td>
+                                        <td>@flight.From</td>
+                                        <td>@flight.To</td>
+                                        <td>@flight.Date.ToShortDateString()</td>
+                                        <td>@flight.Date.ToShortTimeString()</td>
+                                        <td><input class="form-check-input" type="radio" name="DepartureFlightOptions" value="@flight.Id"></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                                    <h5 class="mb-3">Gidiş</h5>
+            <div class="form-group">
+                <div @(ViewBag.OneWayRoundTrip == "TekYon" ? "hidden" : "")>
+                    <h4 class="mb-2 mt-2">Dönüş Uçuşları</h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Firma</th>
+                                <th scope="col">Nereden</th>
+                                <th scope="col">Nereye</th>
+                                <th scope="col">Tarih</th>
+                                <th scope="col">Saat</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                foreach (var flight in ViewBag.ReturnFlights)
+                                {
+                                    <tr>
+                                        <td>@flight.Company</td>
+                                        <td>@flight.From</td>
+                                        <td>@flight.To</td>
+                                        <td>@flight.Date.ToShortDateString()</td>
+                                        <td>@flight.Date.ToShortTimeString()</td>
+                                        <td><input class="form-check-input" type="radio" name="ReturnFlightOptions" value="@flight.Id"></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-                                    <div>
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Firma</th>
-                                                    <th scope="col">Nereden</th>
-                                                    <th scope="col">Nereye</th>
-                                                    <th scope="col">Tarih</th>
-                                                    <th scope="col">Saat</th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @{
-                                                    foreach (var flight in ViewBag.DepartureFlights)
-                                                    {
-                                                        <tr>
-                                                            <td>@flight.Company</td>
-                                                            <td>@flight.From</td>
-                                                            <td>@flight.To</td>
-                                                            <td>@flight.Date.ToShortDateString()</td>
-                                                            <td>@flight.Date.ToShortTimeString()</td>
-                                                            <td><input type="radio" name="DepartureFlightOptions" value="@flight.Id"></td>
-                                                        </tr>
-                                                    }
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                    <div @(ViewBag.OneWayRoundTrip == "TekYon" ? "hidden" : "")>
-                                        <h5 class="mb-3">Dönüş</h5>
-
-                                        <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Firma</th>
-                                                    <th scope="col">Nereden</th>
-                                                    <th scope="col">Nereye</th>
-                                                    <th scope="col">Tarih</th>
-                                                    <th scope="col">Saat</th>
-                                                    <th scope="col"></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @{
-                                                    foreach (var flight in ViewBag.ReturnFlights)
-                                                    {
-                                                        <tr>
-                                                            <td>@flight.Company</td>
-                                                            <td>@flight.From</td>
-                                                            <td>@flight.To</td>
-                                                            <td>@flight.Date.ToShortDateString()</td>
-                                                            <td>@flight.Date.ToShortTimeString()</td>
-                                                            <td><input type="radio" name="ReturnFlightOptions" value="@flight.Id"></td>
-                                                        </tr>
-                                                    }
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-
-                                </div>
-                                <input type="button" name="next" class="next action-button" value="İleri" />
-                            </fieldset>
-                            <fieldset>
-                                <div class="form-card">
-                                    <h5 class="mb-3">Yolcu Bilgileri</h5>
-                                    <input type="text" name="name" placeholder="Adı" value=@(!string.IsNullOrEmpty(userName) ? userName : "")>
-                                    <input type="text" name="surname" placeholder="Soyadı" value=@(!string.IsNullOrEmpty(userSurname) ? userSurname : "")>
-                                    <input type="text" name="mail" placeholder="Mail" value=@(!string.IsNullOrEmpty(userMail) ? userMail : "")>
-                                </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Geri" />
-                                <input type="button" name="next" class="next action-button" value="İleri" />
-                            </fieldset>
-                            <fieldset>
-                                <div class="form-card">
-                                    <h5 class="mb-3">Ödeme Bilgileri</h5>
-                                    <label class="pay">Kart Sahibinin Adı</label>
-                                    <input type="text" name="holdername" placeholder="" />
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <label class="pay">Kart Numarası</label>
-                                            <input type="text" name="cardno" placeholder="" />
-                                        </div>
-                                        <div class="col-3">
-                                            <label class="pay">CVC</label>
-                                            <input type="password" name="cvcpwd" placeholder="***" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <label class="pay">Son Kullanma Tarihi</label>
-                                        </div>
-                                        <div class="col-9">
-                                            <select class="list-dt" id="month" name="expmonth">
-                                                <option selected>Ocak</option>
-                                                <option>Şubat</option>
-                                                <option>Mart</option>
-                                                <option>Nisan</option>
-                                                <option>Mayıs</option>
-                                                <option>Haziran</option>
-                                                <option>Temmuz</option>
-                                                <option>Ağustos</option>
-                                                <option>Eylül</option>
-                                                <option>Ekim</option>
-                                                <option>Kasım</option>
-                                                <option>Aralık</option>
-                                            </select>
-                                            <select class="list-dt" id="year" name="expyear">
-                                                <option selected>2022</option>
-                                                <option>2023</option>
-                                                <option>2024</option>
-                                                <option>2025</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <input type="button" name="previous" class="previous action-button-previous" value="Geri" />
-                                <input type="button" name="make_payment" class="next action-button" value="Tamamla" onclick="SearchFlight()" />
-                            </fieldset>
-                            <fieldset>
-                                <div id="successCard" class="form-card" hidden>
-                                    <h2 class="fs-title text-center">Başarılı!</h2>
-                                    <div class="row justify-content-center">
-                                        <div class="col-7 text-center">
-                                            <h5>Rezervasyon başarıyla tamamlandı.</h5>
-                                            <a type="button" class="action-button" asp-controller="Home" asp-action="Index">Anasayfa</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </fieldset>
-
-                        </form>
+            <h4 class="mb-2 mt-3">Yolcu Bilgileri</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="passengerName">Ad</label>
+                        <input type="text" class="form-control" id="passengerName" placeholder="Ad" value=@(!string.IsNullOrEmpty(userName) ? userName : "") asp-for="PassengerName">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="passengerSurname">Soyad</label>
+                        <input type="text" class="form-control" id="passengerSurname" placeholder="Soyad" value=@(!string.IsNullOrEmpty(userSurname) ? userSurname : "") asp-for="PassengerSurname">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="passengerEmail">Mail</label>
+                        <input type="text" class="form-control" id="passengerEmail" placeholder="Email" value=@(!string.IsNullOrEmpty(userMail) ? userMail : "") asp-for="PassengerEmail">
                     </div>
                 </div>
             </div>
-        </div>
+
+            <h4 class="mb-2 mt-3">Ödeme Bilgileri</h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="creditCardHolderName">Kart Sahibinin Adı</label>
+                        <input type="text" class="form-control" id="creditCardHolderName" placeholder="Kart Sahibinin Adı" asp-for="CreditCardHolderName">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="creditCardNo">Kart Numarası</label>
+                        <input type="text" class="form-control" id="creditCardNo" placeholder="Kart Numarası" asp-for="CreditCardNo">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="creditCardCvc">CVC</label>
+                        <input type="text" class="form-control" id="creditCardCvc" placeholder="CVC" asp-for="CreditCardCvc">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="creditCardExpirationDate">Son Kullanma Tarihi</label>
+                        <input type="date" class="form-control" id="creditCardExpirationDate" asp-for="CreditCardExpirationDate" value="@DateTime.Today.ToString("yyyy-MM-dd")">
+
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-block btn-secondary mt-3" onclick="SaveReservation()">Rezervasyon Yap</button>
+        </form>
     </div>
 </div>
 
@@ -176,14 +142,18 @@
 
         });
 
-        function SearchFlight() {
-            let form = $("#searchFlightForm");
-            let searchFlightViewModel = $(form).serialize();
+        function SaveReservation() {
+
+            let departureFlightId = $('input[name="DepartureFlightOptions"]:checked').val();
+            let returnFlightId = $('input[name="ReturnFlightOptions"]:checked').val();
+
+            let form = $("#reservationForm");
+            let reservationViewModel = $(form).serialize();
             let token = $('input[name="__RequestVerificationToken"]', form).val();
 
             $.ajax({
                 url: "@Url.Action("SaveReservation", "Flight")",
-
+                data: reservationViewModel + '&departureFlightId=' + departureFlightId + '&returnFlightId=' + returnFlightId,
                 async: true,
                 headers: {
                     'RequestVerificationToken': token
@@ -202,12 +172,26 @@
                 },
                 success:
                     function (data) {
-                        $("#successCard").prop("hidden", false);
-                        Swal.close();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Başarılı!',
+                            html: 'Rezervasyon başarıyla yapıldı. Anasayfaya yönlendiriliyorsunuz.',
+                            showConfirmButton: false,
+                            allowEscapeKey: false,
+                            allowOutsideClick: false,
+                            timer: 3000
+                        }).then(function () {
+                            window.location.href = "@Url.Action("Index", "Home")";
+                        });
                     },
                 error:
                     function (data) {
-
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Başarısız!',
+                            html: 'Rezervasyon yapılırken hata meydana geldi.',
+                            showCancelButton: false
+                        });
                     },
             });
         };

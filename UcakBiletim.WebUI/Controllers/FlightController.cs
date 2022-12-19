@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 using UcakBiletim.Business.Services.Flights;
+using UcakBiletim.Business.Services.Reservations;
+using UcakBiletim.Entities.Concrete;
 using UcakBiletim.WebUI.CustomExtensions;
 using UcakBiletim.WebUI.Models.Flights;
 
@@ -10,10 +13,12 @@ namespace UcakBiletim.WebUI.Controllers
     public class FlightController : Controller
     {
         private readonly IFlightService _flightService;
+        private readonly IReservationService _reservationService;
 
-        public FlightController(IFlightService flightService)
+        public FlightController(IFlightService flightService, IReservationService reservationService)
         {
             _flightService = flightService;
+            _reservationService = reservationService;
         }
 
         [HttpPost]
@@ -58,8 +63,25 @@ namespace UcakBiletim.WebUI.Controllers
             return View();
         }
 
-        public IActionResult SaveReservation()
+        [HttpPost]
+        public async Task<IActionResult> SaveReservation(ReservationViewModel reservationViewModel)
         {
+            var reservation = new Reservation
+            {
+                UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId")),
+                DepartureFlightId = reservationViewModel.DepartureFlightId,
+                ReturnFlightId = reservationViewModel.ReturnFlightId,
+                PassengerName = reservationViewModel.PassengerName,
+                PassengerSurname = reservationViewModel.PassengerSurname,
+                PassengerEmail = reservationViewModel.PassengerEmail,
+                CreditCardHolderName = reservationViewModel.CreditCardHolderName,
+                CreditCardNo = reservationViewModel.CreditCardNo,
+                CreditCardCvc = reservationViewModel.CreditCardCvc,
+                CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate
+            };
+
+            await _reservationService.AddAsync(reservation);
+
             return Ok();
         }
     }
