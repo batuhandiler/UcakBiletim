@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
+using UcakBiletim.Business.Services.Reservations;
 using UcakBiletim.Entities.Concrete;
 using UcakBiletim.WebUI.Models.Flights;
-using UcakBiletim.Business.Services.Reservations;
-using UcakBiletim.Business.Services.Flights;
 
 namespace UcakBiletim.WebUI.Controllers
 {
@@ -20,6 +19,11 @@ namespace UcakBiletim.WebUI.Controllers
 
         public IActionResult Index()
         {
+            var userId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId"));
+            var reservations = _reservationService.GetReservationsByUserId(userId);
+
+            ViewBag.Reservations = reservations;
+
             return View();
         }
 
@@ -43,6 +47,25 @@ namespace UcakBiletim.WebUI.Controllers
             await _reservationService.AddAsync(reservation);
 
             return Ok();
+        }
+
+        public async Task<IActionResult> DeleteReservation(int reservationId)
+        {
+            if (reservationId != 0)
+            {
+                try
+                {
+                    await _reservationService.DeleteByIdAsync(reservationId);
+                }
+                catch (Exception exception)
+                {
+                    return BadRequest();
+                }
+
+                return Ok();
+            }
+            else
+                return BadRequest();
         }
     }
 }

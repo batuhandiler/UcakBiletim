@@ -1,0 +1,119 @@
+﻿@using System.Diagnostics.Eventing.Reader
+@{
+    ViewData["Title"] = "Rezervasyonlarım";
+}
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <form id="reservationsForm">
+
+            <div class="form-group">
+                <h4 class="mb-2">Rezervasyonlarım</h4>
+                <div>
+                    @{
+                        if (ViewBag.Reservations.Count != 0)
+                        {
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Y.Adı</th>
+                                        <th scope="col">Y.Soyadı</th>
+                                        <th scope="col">Y.Email</th>
+                                        <th scope="col">G.Firma</th>
+                                        <th scope="col">Gidiş</th>
+                                        <th scope="col">G.Tarihi</th>
+                                        <th scope="col">G.Saati</th>
+                                        <th scope="col">D.Firma</th>
+                                        <th scope="col">Dönüş</th>
+                                        <th scope="col">D.Tarihi</th>
+                                        <th scope="col">D.Saati</th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        foreach (Reservation reservation in ViewBag.Reservations)
+                                        {
+                                            <tr>
+                                                <td>@reservation.PassengerName</td>
+                                                <td>@reservation.PassengerSurname</td>
+                                                <td>@reservation.PassengerEmail</td>
+                                                <td>@reservation.DepartureFlight.Company</td>
+                                                <td>@reservation.DepartureFlight.From</td>
+                                                <td>@reservation.DepartureFlight.Date.ToShortDateString()</td>
+                                                <td>@reservation.DepartureFlight.Date.ToShortTimeString()</td>
+                                                <td>@reservation.ReturnFlight.Company</td>
+                                                <td>@reservation.ReturnFlight.From</td>
+                                                <td>@reservation.ReturnFlight.Date.ToShortDateString()</td>
+                                                <td>@reservation.ReturnFlight.Date.ToShortTimeString()</td>
+                                                <td><a class="btn btn-sm btn-danger text-light" onclick="DeleteReservation(@reservation.Id)">İptal</a></td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info mt-3 w-100" role="alert">
+                                <p class="m-0 text-center">Rezervasyon bulunamadı.</p>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+        function DeleteReservation(reservationId) {
+            Swal.fire({
+                icon: 'question',
+                title: 'İptal',
+                html: 'Rezervasyonu iptal etmek istediğinize emin misiniz?',
+                showCancelButton: true,
+                reverseButtons: true,
+                cancelButtonText: 'Hayır, vazgeçtim.',
+                confirmButtonText: 'Evet, iptal et.'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("DeleteReservation", "Reservation")",
+                        data: { reservationId: reservationId },
+                        dataType: "text",
+                        traditional: true,
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı!',
+                                html: 'Rezervasyon başarıyla iptal edildi.',
+                                showConfirmButton: true
+                            }).then(function () {
+                                location.reload();
+                            });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Başarısız!',
+                                html: 'Rezervasyon iptal edilirken hata meydana geldi.',
+                                showConfirmButton: true
+                            });
+                        }
+                    });
+                }
+            });
+        };
+
+    </script>
+
+}

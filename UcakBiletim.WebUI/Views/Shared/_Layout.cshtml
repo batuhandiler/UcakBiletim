@@ -28,7 +28,9 @@
                         <button class="btn btn-secondary" onclick="ShowSignInModal()">Giriş Yap</button>
                     </li>
                     <li class="nav-item" @(string.IsNullOrEmpty(userMail) ? "hidden" : "")>
-                        <label>@userMail</label> | <button class="btn btn-secondary" onclick="SignOut()">Çıkış Yap</button>
+                        <label>@userMail</label> |
+                        <button class="btn btn-secondary" onclick="Reservations()">Rezervasyonlarım</button>
+                        <button class="btn btn-danger" onclick="SignOut()">Çıkış Yap</button>
                     </li>
                 </ul>
             </div>
@@ -126,7 +128,7 @@
                             timer: 3000
                         }).then(function () {
                             ShowSignInModal();
-                     });
+                        });
                     },
                 error:
                     function (data) {
@@ -253,6 +255,10 @@
                         });
                     },
             });
+        };
+
+        function Reservations() {
+            window.location.href = "@Url.Action("Index", "Reservation")";
         };
 
     </script>

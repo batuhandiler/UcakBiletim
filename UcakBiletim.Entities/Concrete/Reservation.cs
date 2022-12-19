@@ -15,5 +15,8 @@ namespace UcakBiletim.Entities.Concrete
         public string CreditCardNo { get; set; }
         public string CreditCardCvc { get; set; }
         public string CreditCardExpirationDate { get; set; }
+
+        public Flight DepartureFlight { get; set; }
+        public Flight ReturnFlight { get; set; }
     }
 }

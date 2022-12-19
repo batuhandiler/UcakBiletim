@@ -48,7 +48,22 @@ namespace UcakBiletim.Business.Services.Reservations
         public async Task<IList<Reservation>> GetAllAsync()
         {
             var entities = _reservationRepository.GetAll();
+
+            entities = entities.Include(x => x.DepartureFlight);
+            entities = entities.Include(x => x.ReturnFlight);
+
             return await entities.ToListAsync();
+        }
+
+        public List<Reservation> GetReservationsByUserId(int userId)
+        {
+            var reservations = _reservationRepository
+                .FindBy(x => x.UserId == userId);
+
+            reservations = reservations.Include(x => x.DepartureFlight);
+            reservations = reservations.Include(x => x.ReturnFlight);
+
+            return reservations.ToList();
         }
     }
 }
