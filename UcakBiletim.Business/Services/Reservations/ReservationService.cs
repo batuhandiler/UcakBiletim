@@ -49,6 +49,7 @@ namespace UcakBiletim.Business.Services.Reservations
         {
             var entities = _reservationRepository.GetAll();
 
+            //todo: ReturnFlight yoksa include çalışmıyor. Düzeltilecek.
             entities = entities.Include(x => x.DepartureFlight);
             entities = entities.Include(x => x.ReturnFlight);
 
@@ -60,6 +61,7 @@ namespace UcakBiletim.Business.Services.Reservations
             var reservations = _reservationRepository
                 .FindBy(x => x.UserId == userId);
 
+            //todo: ReturnFlight yoksa include çalışmıyor. Düzeltilecek.
             reservations = reservations.Include(x => x.DepartureFlight);
             reservations = reservations.Include(x => x.ReturnFlight);
 
