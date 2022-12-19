@@ -30,6 +30,25 @@ namespace UcakBiletim.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> SaveReservation(ReservationViewModel reservationViewModel)
         {
+            if (reservationViewModel.DepartureFlightId == 0)
+            {
+                return BadRequest("DepertureFlightIdNull");
+            }
+
+            if (string.IsNullOrEmpty(reservationViewModel.PassengerName) ||
+                string.IsNullOrEmpty(reservationViewModel.PassengerSurname) ||
+                string.IsNullOrEmpty(reservationViewModel.PassengerEmail))
+            {
+                return BadRequest("PassengerNull");
+            }
+
+            if (string.IsNullOrEmpty(reservationViewModel.CreditCardHolderName) ||
+                string.IsNullOrEmpty(reservationViewModel.CreditCardNo) ||
+                string.IsNullOrEmpty(reservationViewModel.CreditCardCvc))
+            {
+                return BadRequest("CreditCardNull");
+            }
+
             var reservation = new Reservation
             {
                 UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId")),

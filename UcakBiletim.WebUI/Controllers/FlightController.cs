@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Threading.Tasks;
 using UcakBiletim.Business.Services.Flights;
-using UcakBiletim.Business.Services.Reservations;
-using UcakBiletim.Entities.Concrete;
 using UcakBiletim.WebUI.CustomExtensions;
 using UcakBiletim.WebUI.Models.Flights;
 

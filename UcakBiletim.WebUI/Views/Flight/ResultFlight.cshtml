@@ -129,7 +129,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-block btn-secondary mt-3" onclick="SaveReservation()">Rezervasyon Yap</button>
+            <a class="btn btn-block btn-secondary mt-3 text-light" onclick="SaveReservation()">Rezervasyon Yap</a>
         </form>
     </div>
 </div>
@@ -175,7 +175,7 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Başarılı!',
-                            html: 'Rezervasyon başarıyla yapıldı. Anasayfaya yönlendiriliyorsunuz.',
+                            html: 'Rezervasyon başarıyla yapıldı. Anasayfaya sayfasına yönlendiriliyorsunuz.',
                             showConfirmButton: false,
                             allowEscapeKey: false,
                             allowOutsideClick: false,
@@ -186,12 +186,40 @@
                     },
                 error:
                     function (data) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Başarısız!',
-                            html: 'Rezervasyon yapılırken hata meydana geldi.',
-                            showCancelButton: false
-                        });
+                        var errorMsg = data["responseText"];
+
+                        if (errorMsg == "DepertureFlightIdNull") {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Uyarı!',
+                                html: 'Lütfen gidiş uçuşu seçiniz.',
+                                showCancelButton: false
+                            });
+                        }
+                        else if (errorMsg == "PassengerNull") {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Uyarı!',
+                                html: 'Lütfen yolcu ile ilgili bilgileri eksiksiz giriniz.',
+                                showCancelButton: false
+                            });
+                        }
+                        else if (errorMsg == "CreditCardNull") {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Uyarı!',
+                                html: 'Lütfen ödeme ile ilgili bilgileri eksiksiz giriniz.',
+                                showCancelButton: false
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Başarısız!',
+                                html: 'Rezervasyon yapılırken hata meydana geldi.',
+                                showCancelButton: false
+                            });
+                        }
                     },
             });
         };
