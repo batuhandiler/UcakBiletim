@@ -50,9 +50,9 @@ namespace UcakBiletim.Business.Services.Reservations
         {
             var entities = _reservationRepository.GetAll();
 
-            //todo: ReturnFlight yoksa include çalışmıyor. Düzeltilecek.
-            entities = entities.Include(x => x.DepartureFlight);
-            entities = entities.Include(x => x.ReturnFlight);
+            entities = entities
+                .Include(x => x.DepartureFlight)
+                .Include(x => x.ReturnFlight);
 
             return await entities.ToListAsync();
         }
@@ -62,9 +62,9 @@ namespace UcakBiletim.Business.Services.Reservations
             var reservations = _reservationRepository
                 .FindBy(x => x.UserId == userId);
 
-            //todo: ReturnFlight yoksa include çalışmıyor. Düzeltilecek.
-            reservations = reservations.Include(x => x.DepartureFlight);
-            reservations = reservations.Include(x => x.ReturnFlight);
+            reservations = reservations
+                .Include(x => x.DepartureFlight)
+                .Include(x => x.ReturnFlight);
 
             return reservations.ToList();
         }
@@ -74,9 +74,9 @@ namespace UcakBiletim.Business.Services.Reservations
             var entity = _reservationRepository
                 .FindBy(x => x.ReservationNo == reservationNo);
 
-            //todo: ReturnFlight yoksa include çalışmıyor. Düzeltilecek.
-            entity = entity.Include(x => x.DepartureFlight);
-            entity = entity.Include(x => x.ReturnFlight);
+            entity = entity
+                .Include(x => x.DepartureFlight)
+                .Include(x => x.ReturnFlight);
 
             return entity.FirstOrDefault();
         }
