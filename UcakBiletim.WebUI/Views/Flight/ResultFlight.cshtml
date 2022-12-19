@@ -79,23 +79,26 @@
             </div>
 
             <h4 class="mb-2 mt-3">Yolcu Bilgileri</h4>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="passengerName">Ad</label>
-                        <input type="text" class="form-control" id="passengerName" placeholder="Ad" value=@(!string.IsNullOrEmpty(userName) ? userName : "") asp-for="PassengerName">
+            <input type="button" value="Add a field" class="add" id="add" />
+            <div id="passengers">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="passengerName">Ad</label>
+                            <input type="text" class="form-control" id="passengerName" placeholder="Ad" value=@(!string.IsNullOrEmpty(userName) ? userName : "") asp-for="PassengerName">
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="passengerSurname">Soyad</label>
-                        <input type="text" class="form-control" id="passengerSurname" placeholder="Soyad" value=@(!string.IsNullOrEmpty(userSurname) ? userSurname : "") asp-for="PassengerSurname">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="passengerSurname">Soyad</label>
+                            <input type="text" class="form-control" id="passengerSurname" placeholder="Soyad" value=@(!string.IsNullOrEmpty(userSurname) ? userSurname : "") asp-for="PassengerSurname">
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="passengerEmail">Mail</label>
-                        <input type="text" class="form-control" id="passengerEmail" placeholder="Email" value=@(!string.IsNullOrEmpty(userMail) ? userMail : "") asp-for="PassengerEmail">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="passengerEmail">Mail</label>
+                            <input type="text" class="form-control" id="passengerEmail" placeholder="Email" value=@(!string.IsNullOrEmpty(userMail) ? userMail : "") asp-for="PassengerEmail">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -139,6 +142,33 @@
     <script>
 
         $(document).ready(function () {
+
+            $("#add").click(function () {
+                var lastField = $("#passengers div:last");
+                var intId = (lastField && lastField.length && lastField.data("idx") + 1) || 1;
+                var fieldRow = $("<div class=\"row\" />");
+                var fieldCol = $("<div class=\"col-md-4\" />");
+                var fieldFormGroup = $("<div class=\"form-group\" />");
+                var fLabel = $("<label class=\"form-group\" for=\"passengerName" + intId + "\" />");
+                fLabel.data("idx", intId);
+                var fName = $("<input type=\"text\" class=\"form-control\" id=\"passengerName" + intId + "\" placeholder=\"Ad\" />");
+                fName.data("idx", intId);
+                var fSurname = $("<input type=\"text\" class=\"form-control\" id=\"passengerSurname" + intId + "\" placeholder=\"Soyad\" />");
+                fSurname.data("idx", intId);
+                var fMail = $("<input type=\"text\" class=\"form-control\" id=\"passengerEmail" + intId + "\" placeholder=\"Email\" />");
+                fMail.data("idx", intId);
+                var removeButton = $("<input type=\"button\" class=\"btn btn-sm btn-danger remove\" value=\"-\" />");
+                removeButton.click(function () {
+                    $(this).parent().remove();
+                });
+                fieldFormGroup.append(fLabel);
+                fieldFormGroup.append(fName);
+                fieldCol.append(fieldFormGroup);
+                fieldCol.append(fieldFormGroup);
+                fieldCol.append(removeButton);
+                fieldRow.append(fieldCol);
+                $("#passengers").append(fieldRow);
+            });
 
         });
 
