@@ -9,7 +9,7 @@ namespace UcakBiletim.Entities.Concrete
         public Guid ReservationNo { get; set; }
         public int UserId { get; set; }
         public int DepartureFlightId { get; set; }
-        public int ReturnFlightId { get; set; }
+        public int? ReturnFlightId { get; set; }
         public string PassengerName { get; set; }
         public string PassengerSurname { get; set; }
         public string PassengerEmail { get; set; }
