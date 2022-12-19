@@ -152,7 +152,7 @@
             let token = $('input[name="__RequestVerificationToken"]', form).val();
 
             $.ajax({
-                url: "@Url.Action("SaveReservation", "Flight")",
+                url: "@Url.Action("SaveReservation", "Reservation")",
                 data: reservationViewModel + '&departureFlightId=' + departureFlightId + '&returnFlightId=' + returnFlightId,
                 async: true,
                 headers: {

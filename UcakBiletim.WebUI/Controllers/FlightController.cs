@@ -13,12 +13,10 @@ namespace UcakBiletim.WebUI.Controllers
     public class FlightController : Controller
     {
         private readonly IFlightService _flightService;
-        private readonly IReservationService _reservationService;
 
-        public FlightController(IFlightService flightService, IReservationService reservationService)
+        public FlightController(IFlightService flightService)
         {
             _flightService = flightService;
-            _reservationService = reservationService;
         }
 
         [HttpPost]
@@ -61,28 +59,6 @@ namespace UcakBiletim.WebUI.Controllers
             ViewBag.ReturnFlights = resultFlights.ReturnFlights;
 
             return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> SaveReservation(ReservationViewModel reservationViewModel)
-        {
-            var reservation = new Reservation
-            {
-                UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId")),
-                DepartureFlightId = reservationViewModel.DepartureFlightId,
-                ReturnFlightId = reservationViewModel.ReturnFlightId,
-                PassengerName = reservationViewModel.PassengerName,
-                PassengerSurname = reservationViewModel.PassengerSurname,
-                PassengerEmail = reservationViewModel.PassengerEmail,
-                CreditCardHolderName = reservationViewModel.CreditCardHolderName,
-                CreditCardNo = reservationViewModel.CreditCardNo,
-                CreditCardCvc = reservationViewModel.CreditCardCvc,
-                CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate
-            };
-
-            await _reservationService.AddAsync(reservation);
-
-            return Ok();
         }
     }
 }
