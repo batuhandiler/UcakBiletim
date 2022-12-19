@@ -67,7 +67,7 @@ namespace UcakBiletim.WebUI.Controllers
 
             await _reservationService.AddAsync(reservation);
 
-            return Ok();
+            return Ok(reservation);
         }
 
         public async Task<IActionResult> DeleteReservation(int reservationId)

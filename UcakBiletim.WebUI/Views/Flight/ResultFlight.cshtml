@@ -175,13 +175,10 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Başarılı!',
-                            html: 'Rezervasyon başarıyla yapıldı. Anasayfaya sayfasına yönlendiriliyorsunuz.',
-                            showConfirmButton: false,
-                            allowEscapeKey: false,
-                            allowOutsideClick: false,
-                            timer: 3000
+                            html: 'Rezervasyon başarıyla oluşturuldu. <br/> <b>-Rezervasyon No-</b> <br/>' + data["reservationNo"],
+                            showConfirmButton: true
                         }).then(function () {
-                            window.location.href = "@Url.Action("Index", "Home")";
+                            location.reload();
                         });
                     },
                 error:
