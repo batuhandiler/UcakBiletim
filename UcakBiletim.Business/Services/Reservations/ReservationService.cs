@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,6 +67,18 @@ namespace UcakBiletim.Business.Services.Reservations
             reservations = reservations.Include(x => x.ReturnFlight);
 
             return reservations.ToList();
+        }
+
+        public Reservation GetReservationByReservationNo(Guid reservationNo)
+        {
+            var entity = _reservationRepository
+                .FindBy(x => x.ReservationNo == reservationNo);
+
+            //todo: ReturnFlight yoksa include çalışmıyor. Düzeltilecek.
+            entity = entity.Include(x => x.DepartureFlight);
+            entity = entity.Include(x => x.ReturnFlight);
+
+            return entity.FirstOrDefault();
         }
     }
 }

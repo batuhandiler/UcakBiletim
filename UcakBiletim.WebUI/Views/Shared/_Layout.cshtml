@@ -24,6 +24,7 @@
             <div class="navbar-collapse collapse" id="navbarLinks">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item" @(!string.IsNullOrEmpty(userMail) ? "hidden" : "")>
+                        <button class="btn btn-secondary" onclick="ShowCheckReservationModal()">Rezervasyon Sorgula</button>
                         <button class="btn btn-secondary" onclick="ShowSignUpModal()">Üye Ol</button>
                         <button class="btn btn-secondary" onclick="ShowSignInModal()">Giriş Yap</button>
                     </li>
@@ -47,6 +48,9 @@
     </div>
 
     <div id="signin-modal-body">
+    </div>
+
+    <div id="checkreservation-modal-body">
     </div>
 
     <footer class="border-top footer text-muted text-center">
@@ -91,6 +95,64 @@
                 }
             });
         }
+
+        function ShowCheckReservationModal() {
+            $.ajax({
+                url: "@Url.Action("GetCheckReservationPartial", "Reservation")",
+                dataType: 'html',
+                success: function (data) {
+                    $('#checkreservation-modal-body').html(data);
+                    $('#rezervasyonSorgulaModal').modal('show');
+                }
+            });
+        }
+
+        function CheckReservation() {
+            let reservationNo = $("#rezervasyonSorgulaRezervasyonNo").val();
+
+            $.ajax({
+                url: "@Url.Action("CheckReservationByNo", "Reservation")",
+                data: { reservationNo: reservationNo },
+                async: true,
+                type: "post",
+                contentType: "application/x-www-form-urlencoded",
+                beforeSend: function () {
+                    Swal.fire({
+                        title: 'Lütfen Bekleyin!',
+                        allowEscapeKey: false,
+                        allowOutsideClick: false,
+                        onOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                },
+                success:
+                    function (data) {
+                        window.location.href = "@Url.Action("CheckReservation", "Reservation")";
+                    },
+                error:
+                    function (data) {
+                        var errorMsg = data["responseText"];
+
+                        if (errorMsg == "ReservationNoNull") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Başarısız!',
+                                html: 'Lütfen geçerli bir rezervasyon numarası giriniz.',
+                                showCancelButton: false
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Başarısız!',
+                                html: 'Rezervasyon sorgulanırken hata meydana geldi.',
+                                showCancelButton: false
+                            });
+                        }
+                    },
+            });
+        };
 
         function SignUp() {
             let form = $("#uyeOlForm");

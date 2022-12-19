@@ -1,0 +1,100 @@
+﻿@model Reservation
+
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="form-group">
+            <h4 class="mb-2">Rezervasyon No: @Model.ReservationNo</h4>
+            <div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Y.Adı</th>
+                            <th scope="col">Y.Soyadı</th>
+                            <th scope="col">Y.Email</th>
+                            <th scope="col">G.Firma</th>
+                            <th scope="col">Gidiş</th>
+                            <th scope="col">G.Tarihi</th>
+                            <th scope="col">G.Saati</th>
+                            <th scope="col">D.Firma</th>
+                            <th scope="col">Dönüş</th>
+                            <th scope="col">D.Tarihi</th>
+                            <th scope="col">D.Saati</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.PassengerName</td>
+                            <td>@Model.PassengerSurname</td>
+                            <td>@Model.PassengerEmail</td>
+                            <td>@Model.DepartureFlight.Company</td>
+                            <td>@Model.DepartureFlight.From</td>
+                            <td>@Model.DepartureFlight.Date.ToShortDateString()</td>
+                            <td>@Model.DepartureFlight.Date.ToShortTimeString()</td>
+                            <td>@Model.ReturnFlight.Company</td>
+                            <td>@Model.ReturnFlight.From</td>
+                            <td>@Model.ReturnFlight.Date.ToShortDateString()</td>
+                            <td>@Model.ReturnFlight.Date.ToShortTimeString()</td>
+                            <td><a class="btn btn-sm btn-danger text-light" onclick="DeleteReservation(@Model.Id)">İptal</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+        function DeleteReservation(reservationId) {
+            Swal.fire({
+                icon: 'question',
+                title: 'İptal',
+                html: 'Rezervasyonu iptal etmek istediğinize emin misiniz?',
+                showCancelButton: true,
+                reverseButtons: true,
+                cancelButtonText: 'Hayır, vazgeçtim.',
+                confirmButtonText: 'Evet, iptal et.'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("DeleteReservation", "Reservation")",
+                        data: { reservationId: reservationId },
+                        dataType: "text",
+                        traditional: true,
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı!',
+                                html: 'Rezervasyon başarıyla iptal edildi. Anasayfaya yönlendiriliyorsunuz.',
+                                showConfirmButton: false,
+                                allowEscapeKey: false,
+                                allowOutsideClick: false,
+                                timer: 3000
+                            }).then(function () {
+                                window.location.href = "@Url.Action("Index", "Home")";
+                            });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Başarısız!',
+                                html: 'Rezervasyon iptal edilirken hata meydana geldi.',
+                                showConfirmButton: true
+                            });
+                        }
+                    });
+                }
+            });
+        };
+
+    </script>
+
+}

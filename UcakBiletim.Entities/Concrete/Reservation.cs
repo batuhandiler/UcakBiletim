@@ -1,10 +1,12 @@
-﻿using UcakBiletim.Core.Entities;
+﻿using System;
+using UcakBiletim.Core.Entities;
 
 namespace UcakBiletim.Entities.Concrete
 {
     public class Reservation : IEntity
     {
         public int Id { get; set; }
+        public Guid ReservationNo { get; set; }
         public int UserId { get; set; }
         public int DepartureFlightId { get; set; }
         public int ReturnFlightId { get; set; }
