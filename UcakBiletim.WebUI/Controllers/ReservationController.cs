@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UcakBiletim.Business.Services.Reservations;
 using UcakBiletim.Entities.Concrete;
@@ -29,7 +30,7 @@ namespace UcakBiletim.WebUI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveReservation(ReservationViewModel reservationViewModel)
+        public async Task<IActionResult> SaveReservation(ReservationViewModel reservationViewModel, string[] passengers)
         {
             if (reservationViewModel.DepartureFlightId == 0)
             {
@@ -50,7 +51,51 @@ namespace UcakBiletim.WebUI.Controllers
                 return BadRequest("CreditCardNull");
             }
 
-            var reservation = new Reservation
+            var reservationList = new List<Reservation>();
+
+            var passengersSplit = passengers[0].Split(',');
+
+            foreach (var item in passengersSplit)
+            {
+                var passengerSplit = item.Split(";");
+                var passengerName = passengerSplit[0];
+                var passengerSurname = passengerSplit[1];
+                var passengerMail = passengerSplit[2];
+
+                if (string.IsNullOrEmpty(passengerName) ||
+                    string.IsNullOrEmpty(passengerSurname) ||
+                    string.IsNullOrEmpty(passengerMail))
+                {
+                    return BadRequest("PassengerNull");
+                }
+            }
+
+            foreach (var item in passengersSplit)
+            {
+                var passengerSplit= item.Split(";");
+                var passengerName = passengerSplit[0];
+                var passengerSurname = passengerSplit[1];
+                var passengerMail = passengerSplit[2];
+
+                var reservation = new Reservation
+                {
+                    UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId")),
+                    ReservationNo = Guid.NewGuid(),
+                    DepartureFlightId = reservationViewModel.DepartureFlightId,
+                    ReturnFlightId = reservationViewModel.ReturnFlightId,
+                    PassengerName = passengerName,
+                    PassengerSurname = passengerSurname,
+                    PassengerEmail = passengerMail,
+                    CreditCardHolderName = reservationViewModel.CreditCardHolderName,
+                    CreditCardNo = reservationViewModel.CreditCardNo,
+                    CreditCardCvc = reservationViewModel.CreditCardCvc,
+                    CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate
+                };
+                await _reservationService.AddAsync(reservation);
+                reservationList.Add(reservation);
+            }
+
+            var mainReservation = new Reservation
             {
                 UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId")),
                 ReservationNo = Guid.NewGuid(),
@@ -64,10 +109,10 @@ namespace UcakBiletim.WebUI.Controllers
                 CreditCardCvc = reservationViewModel.CreditCardCvc,
                 CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate
             };
+            await _reservationService.AddAsync(mainReservation);
+            reservationList.Add(mainReservation);
 
-            await _reservationService.AddAsync(reservation);
-
-            return Ok(reservation);
+            return Ok(reservationList);
         }
 
         public async Task<IActionResult> DeleteReservation(int reservationId)

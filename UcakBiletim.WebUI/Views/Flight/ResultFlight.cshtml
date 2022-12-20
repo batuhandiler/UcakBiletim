@@ -195,7 +195,7 @@
             $("#removePassenger").click(function () {
                 var lastField = $("#passengers .row:last");
                 var fieldCount = $("#passengers .row").length;
-                if(fieldCount > 1){
+                if (fieldCount > 1) {
                     $(lastField).remove();
                 }
             });
@@ -211,9 +211,25 @@
             let reservationViewModel = $(form).serialize();
             let token = $('input[name="__RequestVerificationToken"]', form).val();
 
+            var fieldCount = $("#passengers .row").length;
+            var passengersArray = [];
+            for (var i = 1; i <= fieldCount; i++) {
+                var inputName = $("#passengerName" + i).val();
+                var inputSurname = $("#passengerSurname" + i).val();
+                var inputMail = $("#passengerEmail" + i).val();
+                var passenger = "";
+                if (inputName != undefined && inputSurname != undefined && inputMail != undefined) {
+                    passenger = inputName + ";" + inputSurname + ";" + inputMail;
+
+                    passengersArray.push(passenger);
+                }
+            }
+
+            console.log(passengersArray);
+
             $.ajax({
                 url: "@Url.Action("SaveReservation", "Reservation")",
-                data: reservationViewModel + '&departureFlightId=' + departureFlightId + '&returnFlightId=' + returnFlightId,
+                data: reservationViewModel + '&departureFlightId=' + departureFlightId + '&returnFlightId=' + returnFlightId + '&passengers=' + passengersArray,
                 async: true,
                 headers: {
                     'RequestVerificationToken': token
@@ -232,10 +248,15 @@
                 },
                 success:
                     function (data) {
+                        var reservationNo = "";
+                        for (var i = 0; i < data.length; i++) {
+                            reservationNo += "<b>" + data[i]["reservationNo"] + "</b>" + "<br/>";
+                        }
+
                         Swal.fire({
                             icon: 'success',
                             title: 'Başarılı!',
-                            html: 'Rezervasyon başarıyla oluşturuldu. <br/> <b>-Rezervasyon No-</b> <br/>' + data["reservationNo"],
+                            html: 'Rezervasyon başarıyla oluşturuldu. <br/> <b>-Rezervasyon No-</b> <br/>' + reservationNo,
                             showConfirmButton: true
                         }).then(function () {
                             location.reload();
