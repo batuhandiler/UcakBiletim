@@ -79,8 +79,9 @@
             </div>
 
             <h4 class="mb-2 mt-3">Yolcu Bilgileri</h4>
-            <input type="button" value="Add a field" class="add" id="add" />
-            <div id="passengers">
+            <input type="button" value="Yolcu Ekle" class="btn btn-sm btn-secondary addPassenger" id="addPassenger" />
+            <input type="button" value="Yolcu Çıkar" class="btn btn-sm btn-secondary removePassenger" id="removePassenger" />
+            <div id="passengers" class="mt-2">
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -143,31 +144,57 @@
 
         $(document).ready(function () {
 
-            $("#add").click(function () {
-                var lastField = $("#passengers div:last");
-                var intId = (lastField && lastField.length && lastField.data("idx") + 1) || 1;
+            $("#addPassenger").click(function () {
+                var lastField = $("#passengers .row");
+                var intId = lastField.length + 1;
+
                 var fieldRow = $("<div class=\"row\" />");
-                var fieldCol = $("<div class=\"col-md-4\" />");
-                var fieldFormGroup = $("<div class=\"form-group\" />");
-                var fLabel = $("<label class=\"form-group\" for=\"passengerName" + intId + "\" />");
-                fLabel.data("idx", intId);
+                var fieldColName = $("<div class=\"col-md-4\" />");
+                var fieldColSurname = $("<div class=\"col-md-4\" />");
+                var fieldColMail = $("<div class=\"col-md-4\" />");
+
+                var fieldFormGroupName = $("<div class=\"form-group\" />");
+                var fieldFormGroupSurname = $("<div class=\"form-group\" />");
+                var fieldFormGroupMail = $("<div class=\"form-group\" />");
+
+                var fNameLabel = $("<label class=\"form-group\" for=\"passengerName" + intId + "\">Ad</label>");
+                fNameLabel.data("idx", intId);
                 var fName = $("<input type=\"text\" class=\"form-control\" id=\"passengerName" + intId + "\" placeholder=\"Ad\" />");
                 fName.data("idx", intId);
+
+                var fSurnameLabel = $("<label class=\"form-group\" for=\"passengerSurname" + intId + "\">Soyad</label>");
+                fSurnameLabel.data("idx", intId);
                 var fSurname = $("<input type=\"text\" class=\"form-control\" id=\"passengerSurname" + intId + "\" placeholder=\"Soyad\" />");
                 fSurname.data("idx", intId);
+
+                var fMailLabel = $("<label class=\"form-group\" for=\"passengerEmail" + intId + "\">Mail</label>");
+                fMailLabel.data("idx", intId);
                 var fMail = $("<input type=\"text\" class=\"form-control\" id=\"passengerEmail" + intId + "\" placeholder=\"Email\" />");
                 fMail.data("idx", intId);
-                var removeButton = $("<input type=\"button\" class=\"btn btn-sm btn-danger remove\" value=\"-\" />");
-                removeButton.click(function () {
-                    $(this).parent().remove();
-                });
-                fieldFormGroup.append(fLabel);
-                fieldFormGroup.append(fName);
-                fieldCol.append(fieldFormGroup);
-                fieldCol.append(fieldFormGroup);
-                fieldCol.append(removeButton);
-                fieldRow.append(fieldCol);
+
+                fieldFormGroupName.append(fNameLabel);
+                fieldFormGroupName.append(fName);
+
+                fieldFormGroupSurname.append(fSurnameLabel);
+                fieldFormGroupSurname.append(fSurname);
+
+                fieldFormGroupMail.append(fMailLabel);
+                fieldFormGroupMail.append(fMail);
+
+                fieldColName.append(fieldFormGroupName);
+                fieldColSurname.append(fieldFormGroupSurname);
+                fieldColMail.append(fieldFormGroupMail);
+
+                fieldRow.append(fieldColName);
+                fieldRow.append(fieldColSurname);
+                fieldRow.append(fieldColMail);
+
                 $("#passengers").append(fieldRow);
+            });
+
+            $("#removePassenger").click(function () {
+                var lastField = $("#passengers .row:last");
+                $(lastField).remove();
             });
 
         });
