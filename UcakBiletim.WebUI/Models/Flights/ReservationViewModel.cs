@@ -4,6 +4,7 @@
     {
         public int DepartureFlightId { get; set; }
         public int ReturnFlightId { get; set; }
+        public string CabinClass { get; set; }
         public string PassengerName { get; set; }
         public string PassengerSurname { get; set; }
         public string PassengerEmail { get; set; }

@@ -30,6 +30,7 @@ namespace UcakBiletim.WebUI.Controllers
                 var resultFlights = new ResultFlights
                 {
                     OneWayRoundTrip = searchFlightViewModel.OneWayRoundTrip,
+                    CabinClass = searchFlightViewModel.CabinClass,
                     DepartureFlights = departureFlights,
                     ReturnFlights = returnFligts,
                 };
@@ -52,6 +53,7 @@ namespace UcakBiletim.WebUI.Controllers
             var resultFlights = HttpContext.Session.Get<ResultFlights>("ResultFlights");
 
             ViewBag.OneWayRoundTrip = resultFlights.OneWayRoundTrip;
+            ViewBag.CabinClass = resultFlights.CabinClass;
             ViewBag.DepartureFlights = resultFlights.DepartureFlights;
             ViewBag.ReturnFlights = resultFlights.ReturnFlights;
 

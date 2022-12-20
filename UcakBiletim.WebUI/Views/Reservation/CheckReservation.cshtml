@@ -23,6 +23,7 @@
                             <th scope="col">Dönüş</th>
                             <th scope="col">D.Tarihi</th>
                             <th scope="col">D.Saati</th>
+                            <th scope="col">Class</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -39,6 +40,7 @@
                             <td>@Model.ReturnFlight.From</td>
                             <td>@Model.ReturnFlight.Date.ToShortDateString()</td>
                             <td>@Model.ReturnFlight.Date.ToShortTimeString()</td>
+                            <td>@Model.CabinClass</td>
                             <td><a class="btn btn-sm btn-danger text-light" onclick="DeleteReservation(@Model.Id)">İptal</a></td>
                         </tr>
                     </tbody>
