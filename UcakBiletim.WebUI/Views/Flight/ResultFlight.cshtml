@@ -194,7 +194,10 @@
 
             $("#removePassenger").click(function () {
                 var lastField = $("#passengers .row:last");
-                $(lastField).remove();
+                var fieldCount = $("#passengers .row").length;
+                if(fieldCount > 1){
+                    $(lastField).remove();
+                }
             });
 
         });
