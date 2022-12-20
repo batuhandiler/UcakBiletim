@@ -72,7 +72,7 @@ namespace UcakBiletim.WebUI.Controllers
 
             foreach (var item in passengersSplit)
             {
-                var passengerSplit= item.Split(";");
+                var passengerSplit = item.Split(";");
                 var passengerName = passengerSplit[0];
                 var passengerSurname = passengerSplit[1];
                 var passengerMail = passengerSplit[2];
@@ -143,6 +143,10 @@ namespace UcakBiletim.WebUI.Controllers
                 return BadRequest("ReservationNoNull");
 
             var reservation = _reservationService.GetReservationByReservationNo(reservationNo);
+
+            if (reservation is null)
+                return BadRequest("ReservationNull");
+
             HttpContext.Session.Set<Reservation>("Reservation", reservation);
 
             return Ok();
@@ -151,6 +155,7 @@ namespace UcakBiletim.WebUI.Controllers
         public IActionResult CheckReservation()
         {
             var reservation = HttpContext.Session.Get<Reservation>("Reservation");
+
             return View(reservation);
         }
 
