@@ -53,47 +53,51 @@ namespace UcakBiletim.WebUI.Controllers
 
             var reservationList = new List<Reservation>();
 
-            var passengersSplit = passengers[0].Split(',');
-
-            foreach (var item in passengersSplit)
+            if (passengers[0] != null)
             {
-                var passengerSplit = item.Split(";");
-                var passengerName = passengerSplit[0];
-                var passengerSurname = passengerSplit[1];
-                var passengerMail = passengerSplit[2];
+                var passengersSplit = passengers[0].Split(',');
 
-                if (string.IsNullOrEmpty(passengerName) ||
-                    string.IsNullOrEmpty(passengerSurname) ||
-                    string.IsNullOrEmpty(passengerMail))
+                foreach (var item in passengersSplit)
                 {
-                    return BadRequest("PassengerNull");
+                    var passengerSplit = item.Split(";");
+                    var passengerName = passengerSplit[0];
+                    var passengerSurname = passengerSplit[1];
+                    var passengerMail = passengerSplit[2];
+
+                    if (string.IsNullOrEmpty(passengerName) ||
+                        string.IsNullOrEmpty(passengerSurname) ||
+                        string.IsNullOrEmpty(passengerMail))
+                    {
+                        return BadRequest("PassengerNull");
+                    }
                 }
-            }
 
-            foreach (var item in passengersSplit)
-            {
-                var passengerSplit = item.Split(";");
-                var passengerName = passengerSplit[0];
-                var passengerSurname = passengerSplit[1];
-                var passengerMail = passengerSplit[2];
-
-                var reservation = new Reservation
+                foreach (var item in passengersSplit)
                 {
-                    UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId")),
-                    ReservationNo = Guid.NewGuid(),
-                    DepartureFlightId = reservationViewModel.DepartureFlightId,
-                    ReturnFlightId = reservationViewModel.ReturnFlightId,
-                    CabinClass = reservationViewModel.CabinClass,
-                    PassengerName = passengerName,
-                    PassengerSurname = passengerSurname,
-                    PassengerEmail = passengerMail,
-                    CreditCardHolderName = reservationViewModel.CreditCardHolderName,
-                    CreditCardNo = reservationViewModel.CreditCardNo,
-                    CreditCardCvc = reservationViewModel.CreditCardCvc,
-                    CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate
-                };
-                await _reservationService.AddAsync(reservation);
-                reservationList.Add(reservation);
+                    var passengerSplit = item.Split(";");
+                    var passengerName = passengerSplit[0];
+                    var passengerSurname = passengerSplit[1];
+                    var passengerMail = passengerSplit[2];
+
+                    var reservation = new Reservation
+                    {
+                        UserId = Convert.ToInt32(HttpContext.Session.GetInt32("UserId")),
+                        ReservationNo = Guid.NewGuid(),
+                        DepartureFlightId = reservationViewModel.DepartureFlightId,
+                        ReturnFlightId = reservationViewModel.ReturnFlightId,
+                        CabinClass = reservationViewModel.CabinClass,
+                        PassengerName = passengerName,
+                        PassengerSurname = passengerSurname,
+                        PassengerEmail = passengerMail,
+                        CreditCardHolderName = reservationViewModel.CreditCardHolderName,
+                        CreditCardNo = reservationViewModel.CreditCardNo,
+                        CreditCardCvc = reservationViewModel.CreditCardCvc,
+                        CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate,
+                        Price = reservationViewModel.Price
+                    };
+                    await _reservationService.AddAsync(reservation);
+                    reservationList.Add(reservation);
+                }
             }
 
             var mainReservation = new Reservation
@@ -109,7 +113,8 @@ namespace UcakBiletim.WebUI.Controllers
                 CreditCardHolderName = reservationViewModel.CreditCardHolderName,
                 CreditCardNo = reservationViewModel.CreditCardNo,
                 CreditCardCvc = reservationViewModel.CreditCardCvc,
-                CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate
+                CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate,
+                Price = reservationViewModel.Price
             };
             await _reservationService.AddAsync(mainReservation);
             reservationList.Add(mainReservation);

@@ -12,36 +12,41 @@
     <div class="col-md-12">
         <form id="reservationForm">
 
-            <input type="hidden" value="@ViewBag.CabinClass" asp-for="CabinClass"/>
+            <input type="hidden" value="@ViewBag.CabinClass" asp-for="CabinClass" />
+            <input id="priceDeparture" type="hidden" value="" />
+            <input id="priceReturn" type="hidden" value="" />
+            <input id="price" type="hidden" value="" asp-for="Price" />
 
             <div class="form-group">
                 <h4 class="mb-2">Gidiş Uçuşları - <small>@ViewBag.CabinClass</small></h4>
                 <div>
-                    <table class="table table-hover">
+                    <table id="DepartureFlightTable" class="table table-hover">
                         <thead>
-                        <tr>
-                            <th scope="col">Firma</th>
-                            <th scope="col">Nereden</th>
-                            <th scope="col">Nereye</th>
-                            <th scope="col">Tarih</th>
-                            <th scope="col">Saat</th>
-                            <th scope="col"></th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Firma</th>
+                                <th scope="col">Nereden</th>
+                                <th scope="col">Nereye</th>
+                                <th scope="col">Tarih</th>
+                                <th scope="col">Saat</th>
+                                <th scope="col">Fiyat</th>
+                                <th scope="col"></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @{
-                            foreach (var flight in ViewBag.DepartureFlights)
-                            {
-                                <tr>
-                                    <td>@flight.Company</td>
-                                    <td>@flight.From</td>
-                                    <td>@flight.To</td>
-                                    <td>@flight.Date.ToShortDateString()</td>
-                                    <td>@flight.Date.ToShortTimeString()</td>
-                                    <td><input class="form-check-input" type="radio" name="DepartureFlightOptions" value="@flight.Id"></td>
-                                </tr>
+                            @{
+                                foreach (Flight flight in ViewBag.DepartureFlights)
+                                {
+                                    <tr>
+                                        <td>@flight.Company</td>
+                                        <td>@flight.From</td>
+                                        <td>@flight.To</td>
+                                        <td>@flight.Date.ToShortDateString()</td>
+                                        <td>@flight.Date.ToShortTimeString()</td>
+                                        <td id="@flight.Id">@(ViewBag.CabinClass == "BusinessClass" ? flight.BusinessClassPrice : flight.EconomyClassPrice)</td>
+                                        <td><input class="form-check-input" type="radio" name="DepartureFlightOptions" value="@flight.Id"></td>
+                                    </tr>
+                                }
                             }
-                        }
                         </tbody>
                     </table>
                 </div>
@@ -52,37 +57,39 @@
                     <h4 class="mb-2 mt-2">Dönüş Uçuşları - <small>@ViewBag.CabinClass</small></h4>
                     <table class="table table-hover">
                         <thead>
-                        <tr>
-                            <th scope="col">Firma</th>
-                            <th scope="col">Nereden</th>
-                            <th scope="col">Nereye</th>
-                            <th scope="col">Tarih</th>
-                            <th scope="col">Saat</th>
-                            <th scope="col"></th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Firma</th>
+                                <th scope="col">Nereden</th>
+                                <th scope="col">Nereye</th>
+                                <th scope="col">Tarih</th>
+                                <th scope="col">Saat</th>
+                                <th scope="col">Fiyat</th>
+                                <th scope="col"></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @{
-                            foreach (var flight in ViewBag.ReturnFlights)
-                            {
-                                <tr>
-                                    <td>@flight.Company</td>
-                                    <td>@flight.From</td>
-                                    <td>@flight.To</td>
-                                    <td>@flight.Date.ToShortDateString()</td>
-                                    <td>@flight.Date.ToShortTimeString()</td>
-                                    <td><input class="form-check-input" type="radio" name="ReturnFlightOptions" value="@flight.Id"></td>
-                                </tr>
+                            @{
+                                foreach (Flight flight in ViewBag.ReturnFlights)
+                                {
+                                    <tr>
+                                        <td>@flight.Company</td>
+                                        <td>@flight.From</td>
+                                        <td>@flight.To</td>
+                                        <td>@flight.Date.ToShortDateString()</td>
+                                        <td>@flight.Date.ToShortTimeString()</td>
+                                        <td>@(ViewBag.CabinClass == "BusinessClass" ? flight.BusinessClassPrice : flight.EconomyClassPrice)</td>
+                                        <td><input class="form-check-input" type="radio" name="ReturnFlightOptions" value="@flight.Id"></td>
+                                    </tr>
+                                }
                             }
-                        }
                         </tbody>
                     </table>
                 </div>
             </div>
 
             <h4 class="mb-2 mt-3">Yolcu Bilgileri</h4>
-            <input type="button" value="Yolcu Ekle" class="btn btn-sm btn-secondary addPassenger" id="addPassenger"/>
-            <input type="button" value="Yolcu Çıkar" class="btn btn-sm btn-secondary removePassenger" id="removePassenger"/>
+            <input type="button" value="Yolcu Ekle" class="btn btn-sm btn-secondary addPassenger" id="addPassenger" />
+            <input type="button" value="Yolcu Çıkar" class="btn btn-sm btn-secondary removePassenger" id="removePassenger" />
             <div id="passengers" class="mt-2">
                 <div class="row">
                     <div class="col-md-4">
@@ -106,7 +113,8 @@
                 </div>
             </div>
 
-            <h4 class="mb-2 mt-3">Ödeme Bilgileri</h4>
+            <h4 class="mb-2 mt-3">Ödeme Bilgileri - <small id="priceTotal">0.00</small><small> TL</small></h4>
+
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
@@ -202,6 +210,63 @@
                 }
             });
 
+            $('input[type=radio][name=DepartureFlightOptions]').change(function () {
+                var flightId = this.value;
+
+                $.ajax({
+                    url: "@Url.Action("GetPrice", "Flight")",
+                    data: { flightId: flightId, cabinClass: "@(ViewBag.CabinClass)" },
+                    async: true,
+                    type: "post",
+                    contentType: "application/x-www-form-urlencoded",
+                    success:
+                        function (data) {
+                            $("#priceDeparture").val(data);
+                            var returnPrice = Number($("#priceReturn").val());
+                            var totalPrice = returnPrice + data;
+                            $("#price").val(totalPrice);
+                            $("#priceTotal").text(totalPrice);
+                        },
+                    error:
+                        function (data) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Uyarı!',
+                                html: 'Fiyat getirilirken hata oluştu.',
+                                showCancelButton: false
+                            });
+                        },
+                });
+            });
+
+            $('input[type=radio][name=ReturnFlightOptions]').change(function () {
+                var flightId = this.value;
+
+                $.ajax({
+                    url: "@Url.Action("GetPrice", "Flight")",
+                    data: { flightId: flightId, cabinClass: "@(ViewBag.CabinClass)" },
+                    async: true,
+                    type: "post",
+                    contentType: "application/x-www-form-urlencoded",
+                    success:
+                        function (data) {
+                            $("#priceReturn").val(data);
+                            var departurePrice = Number($("#priceDeparture").val());
+                            var totalPrice = departurePrice + data;
+                            $("#price").val(totalPrice);
+                            $("#priceTotal").text(totalPrice);
+                        },
+                    error:
+                        function (data) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Uyarı!',
+                                html: 'Fiyat getirilirken hata oluştu.',
+                                showCancelButton: false
+                            });
+                        },
+                });
+            });
         });
 
         function SaveReservation() {

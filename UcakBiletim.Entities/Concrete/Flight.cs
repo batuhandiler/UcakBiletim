@@ -10,5 +10,7 @@ namespace UcakBiletim.Entities.Concrete
         public string From { get; set; }
         public string To { get; set; }
         public DateTime Date { get; set; }
+        public decimal BusinessClassPrice { get; set; }
+        public decimal EconomyClassPrice { get; set; }
     }
 }

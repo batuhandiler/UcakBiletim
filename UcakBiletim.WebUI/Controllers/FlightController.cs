@@ -59,5 +59,17 @@ namespace UcakBiletim.WebUI.Controllers
 
             return View();
         }
+
+        public IActionResult GetPrice(int flightId, string cabinClass)
+        {
+            if (flightId != 0)
+            {
+                var flight = _flightService.GetById(flightId);
+                if (flight == null)
+                    return BadRequest();
+                return Ok(cabinClass == "BusinessClass" ? flight.BusinessClassPrice : flight.EconomyClassPrice);
+            }
+            return BadRequest();
+        }
     }
 }

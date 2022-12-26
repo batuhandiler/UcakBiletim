@@ -12,5 +12,6 @@
         public string CreditCardNo { get; set; }
         public string CreditCardCvc { get; set; }
         public string CreditCardExpirationDate { get; set; }
+        public decimal Price { get; set; }
     }
 }
