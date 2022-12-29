@@ -95,6 +95,10 @@ namespace UcakBiletim.WebUI.Controllers
                         CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate,
                         Price = reservationViewModel.Price
                     };
+
+                    if (reservation.ReturnFlightId == 0)
+                        reservation.ReturnFlightId = null;
+
                     await _reservationService.AddAsync(reservation);
                     reservationList.Add(reservation);
                 }
@@ -116,8 +120,18 @@ namespace UcakBiletim.WebUI.Controllers
                 CreditCardExpirationDate = reservationViewModel.CreditCardExpirationDate,
                 Price = reservationViewModel.Price
             };
-            await _reservationService.AddAsync(mainReservation);
-            reservationList.Add(mainReservation);
+
+            if (mainReservation.ReturnFlightId == 0)
+                mainReservation.ReturnFlightId = null;
+
+            try
+            {
+                await _reservationService.AddAsync(mainReservation);
+                reservationList.Add(mainReservation);
+            }
+            catch (Exception e)
+            {
+            }
 
             return Ok(reservationList);
         }
