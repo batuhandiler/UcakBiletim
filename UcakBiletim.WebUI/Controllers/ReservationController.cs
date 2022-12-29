@@ -124,14 +124,8 @@ namespace UcakBiletim.WebUI.Controllers
             if (mainReservation.ReturnFlightId == 0)
                 mainReservation.ReturnFlightId = null;
 
-            try
-            {
-                await _reservationService.AddAsync(mainReservation);
-                reservationList.Add(mainReservation);
-            }
-            catch (Exception e)
-            {
-            }
+            await _reservationService.AddAsync(mainReservation);
+            reservationList.Add(mainReservation);
 
             return Ok(reservationList);
         }
