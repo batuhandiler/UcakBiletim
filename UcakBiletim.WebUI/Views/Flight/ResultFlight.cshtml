@@ -42,7 +42,7 @@
                                         <td>@flight.To</td>
                                         <td>@flight.Date.ToShortDateString()</td>
                                         <td>@flight.Date.ToShortTimeString()</td>
-                                        <td id="@flight.Id">@(ViewBag.CabinClass == "BusinessClass" ? flight.BusinessClassPrice : flight.EconomyClassPrice)</td>
+                                        <td id="@flight.Id">@(ViewBag.CabinClass == "BusinessClass" ? flight.BusinessClassPrice : flight.EconomyClassPrice) TL</td>
                                         <td><input class="form-check-input" type="radio" name="DepartureFlightOptions" value="@flight.Id"></td>
                                     </tr>
                                 }
@@ -77,7 +77,7 @@
                                         <td>@flight.To</td>
                                         <td>@flight.Date.ToShortDateString()</td>
                                         <td>@flight.Date.ToShortTimeString()</td>
-                                        <td>@(ViewBag.CabinClass == "BusinessClass" ? flight.BusinessClassPrice : flight.EconomyClassPrice)</td>
+                                        <td>@(ViewBag.CabinClass == "BusinessClass" ? flight.BusinessClassPrice : flight.EconomyClassPrice) TL</td>
                                         <td><input class="form-check-input" type="radio" name="ReturnFlightOptions" value="@flight.Id"></td>
                                     </tr>
                                 }
